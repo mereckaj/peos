@@ -1,0 +1,9 @@
+<action name="act_0" state="READY">
+<script>
+script
+</script>
+<req_resource name="r1" value="r1val_eval" qualifier="abstract"></req_resource>
+<req_resource name="r2" value="r2val_eval" qualifier=""></req_resource>
+<prov_resource name="r1" value="r1val_eval" qualifier="abstract"></prov_resource>
+<prov_resource name="r2" value="r2val_eval" qualifier=""></prov_resource>
+</action>

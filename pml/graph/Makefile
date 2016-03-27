@@ -1,5 +1,5 @@
 CC	= gcc
-CFLAGS	= -I..  -g -Wall
+CFLAGS	= -I..  -g -w
 LIB	= ../pml/libpml.a
 OBJS	= traverse.o
 SRCS	= traverse.c
