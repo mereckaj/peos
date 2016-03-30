@@ -175,7 +175,7 @@ void insert_iteration_links(Node from, Node to) {
 	/* Look for an unseen node to skip to. */
 	for (i = 0; (p = (Node) ListIndex(from->successors, i)); i++) {
 		if ((node_color_t) p->data == WHITE) {
-			printf("%ld -> %ld [label=\"skip\", weight=0]\n", (long) to,
+			printf("%ld -> %ld [label=\"skip\", weight=1]\n", (long) to,
 					(long) p);
 		}
 	}
