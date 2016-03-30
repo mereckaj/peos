@@ -175,7 +175,7 @@ void insert_iteration_links(Node from, Node to) {
 	/* Look for an unseen node to skip to. */
 	for (i = 0; (p = (Node) ListIndex(from->successors, i)); i++) {
 		if ((node_color_t) p->data == WHITE) {
-			printf("%ld -> %ld [label=\"skip\", weight=1]\n", (long) to,
+			printf("%ld -> %ld [label=\"skip\", weight=0]\n", (long) to,
 					(long) p);
 		}
 	}
@@ -238,12 +238,12 @@ void print_node_as_key(char* key, Node val, int isLast) {
 
 }
 void print_resource_tree(char* key, Tree val, int isLast) {
-	printf("\"%s\":\"", key);
+	printf("\"%s\":[\"", key);
 	print_resources_json(val);
 	if (isLast == 0) {
-		printf("\",\n");
+		printf("\"],\n");
 	} else {
-		printf("\"\n");
+		printf("\"]\n");
 	}
 }
 void print_resources_json(Tree t) {
@@ -261,11 +261,7 @@ void print_resources_json(Tree t) {
 			}
 		} else if (IS_OP_TREE(t)) {
 			print_resources(t->left);
-			if (TREE_OP(t) == DOT) {
-				printf("%s", op_to_string(TREE_OP(t)));
-			} else {
-				printf(" %s ", op_to_string(TREE_OP(t)));
-			}
+				printf("\",\"", op_to_string(TREE_OP(t)));
 			print_resources(t->right);
 		} else {
 			print_resources(t->right);
