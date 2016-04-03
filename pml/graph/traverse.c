@@ -53,6 +53,8 @@ extern int main(
 		);
 
 char *node_type(int type) {
+
+	char buf[512];
 	switch (type) {
 	case (ACTION):
 		return "action";
@@ -85,7 +87,8 @@ char *node_type(int type) {
 		return "rend";
 		break;
 	default:
-		return "unknown";
+		sprintf(buf, "%d", type);
+		return &buf;
 		break;
 
 	}
@@ -260,12 +263,12 @@ void print_resources_json(Tree t) {
 				printf("%s", TREE_ID(t));
 			}
 		} else if (IS_OP_TREE(t)) {
-			print_resources(t->left);
-				printf("\",\"", op_to_string(TREE_OP(t)));
-			print_resources(t->right);
+			print_resources_json(t->left);
+				printf("\",\"");
+			print_resources_json(t->right);
 		} else {
-			print_resources(t->right);
-			print_resources(t->right);
+			print_resources_json(t->right);
+			print_resources_json(t->right);
 		}
 	} else {
 		printf("(null)");

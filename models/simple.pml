@@ -2,7 +2,7 @@ process simple {
   action a {
     requires { foo }
     provides { foo } 
-    agent { poo }
+    agent { "http://www.pc.com/test"}
   }
   action b {
     requires { foo }
