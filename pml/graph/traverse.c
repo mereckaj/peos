@@ -209,7 +209,7 @@ void print_json_key_value_c(char * key, char* value, int isLast) {
 		printf("\"%s\":\"%s\"\n", key, value);
 	}
 }
-void print_relation_as_json(Node from, Node to){
+void print_relation_as_json(Node from, Node to) {
 	printf("{\n"
 			"\"type\":\"relation\",\n"
 			"\"data\":{\n");
@@ -218,26 +218,92 @@ void print_relation_as_json(Node from, Node to){
 	printf("}\n"
 			"},\n");
 }
+char* escape_json_string(char* n) {
+	char tmp[512];
+	int num = sprintf(tmp, "%s", n);
+	int i, j = 1;
+	char result[num * 2];
+	memset(&result," ",num*2);
+	result[0] = '\"';
+	for (i = 1; i < num - 1; i++) {
+		switch (tmp[i]) {
+		case '\"':
+			result[j] = '\\';
+			j++;
+			result[j] = '\"';
+			j++;
+			break;
+		case '\\':
+			result[j] = '\\';
+			j++;
+			result[j] = '\\';
+			j++;
+			break;
+		case '\/':
+			result[j] = '\\';
+			j++;
+			result[j] = '\/';
+			j++;
+			break;
+		case '\b':
+			result[j] = '\\';
+			j++;
+			result[j] = 'b';
+			j++;
+			break;
+		case '\f':
+			result[j] = '\\';
+			j++;
+			result[j] = 'f';
+			j++;
+			break;
+		case '\n':
+			result[j] = '\\';
+			j++;
+			result[j] = 'n';
+			j++;
+			break;
+		case '\r':
+			result[j] = '\\';
+			j++;
+			result[j] = 'r';
+			j++;
+			break;
+		case '\t':
+			result[j] = '\\';
+			j++;
+			result[j] = 't';
+			j++;
+			break;
+		default:
+			result[j] = tmp[i];
+			j++;
+		}
+	}
+	result[j] = '\"';
+	result[j+1] = '\0';
+	return &result;
+}
 void print_node_as_json(Node n, int isLast) {
 	printf("{\n\"type\":\"node\",\n\"data\":{\n");
 	print_json_key_value(strdup("name"), n->name, 0, 0);
 	print_json_key_value_c(strdup("type"), node_type(n->type), 0);
 	print_json_key_value_c(strdup("action_type"), node_type(n->action_type), 0);
 	print_json_key_value(strdup("tool"), n->tool, 1, 0);
-	print_json_key_value(strdup("script"), n->script, 1, 0);
+	print_json_key_value(strdup("script"), escape_json_string(n->script), 1, 0);
 	print_resource_tree(strdup("agent"), n->agent, 0);
 	print_resource_tree(strdup("provides"), n->provides, 0);
 	print_resource_tree(strdup("requires"), n->requires, 1);
 	printf("}\n}");
-	if(isLast==0){
+	if (isLast == 0) {
 		printf(",\n");
-	}else{
+	} else {
 		printf("\n");
 	}
 }
 void print_node_as_key(char* key, Node val, int isLast) {
 	printf("\"%s\":", key);
-	print_node_as_json(val,isLast);
+	print_node_as_json(val, isLast);
 
 }
 void print_resource_tree(char* key, Tree val, int isLast) {
@@ -264,7 +330,7 @@ void print_resources_json(Tree t) {
 			}
 		} else if (IS_OP_TREE(t)) {
 			print_resources_json(t->left);
-				printf("\",\"");
+			printf("\",\"");
 			print_resources_json(t->right);
 		} else {
 			print_resources_json(t->right);
@@ -372,7 +438,7 @@ void name_node(Node n) {
 	}
 	if (graph_type != XML) {
 		if (graph_type == JSON) {
-			print_node_as_json(n,0);
+			print_node_as_json(n, 0);
 		} else {
 			printf("%ld [shape=%s, ", (long) n, node_shape(n->type));
 		}
@@ -556,7 +622,7 @@ int main(argc, argv)
 				if (*p == '-')
 					*p = '_';
 			}
-			if(graph_type ==JSON){
+			if (graph_type == JSON) {
 				printf("[\n");
 			}
 			if (graph_type != JSON) {
