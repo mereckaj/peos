@@ -219,11 +219,11 @@ void print_relation_as_json(Node from, Node to) {
 			"},\n");
 }
 char* escape_json_string(char* n) {
-	char tmp[512];
+	char tmp[65536];
 	int num = sprintf(tmp, "%s", n);
 	int i, j = 1;
 	char result[num * 2];
-	memset(&result," ",num*2);
+	memset(&result, ' ', num * 2);
 	result[0] = '\"';
 	for (i = 1; i < num - 1; i++) {
 		switch (tmp[i]) {
@@ -281,7 +281,8 @@ char* escape_json_string(char* n) {
 		}
 	}
 	result[j] = '\"';
-	result[j+1] = '\0';
+	j++;
+	result[j] = '\0';
 	return &result;
 }
 void print_node_as_json(Node n, int isLast) {
