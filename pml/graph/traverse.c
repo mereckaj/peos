@@ -290,7 +290,7 @@ void print_node_as_json(Node n, int isLast) {
 	print_json_key_value(strdup("name"), n->name, 0, 0);
 	print_json_key_value_c(strdup("type"), node_type(n->type), 0);
 	print_json_key_value_c(strdup("action_type"), node_type(n->action_type), 0);
-	print_json_key_value(strdup("tool"), n->tool, 1, 0);
+	print_json_key_value(strdup("tool"), escape_json_string(n->tool), 1, 0);
 	print_json_key_value(strdup("script"), escape_json_string(n->script), 1, 0);
 	print_resource_tree(strdup("agent"), n->agent, 0);
 	print_resource_tree(strdup("provides"), n->provides, 0);
